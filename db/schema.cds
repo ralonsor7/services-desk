@@ -14,13 +14,7 @@ entity solicitudes : managed
     tipo_solicitud : Association to one tipo_solicitud;
     Estado : Association to one estado default 'PENDIENTE';
     Urgencia : Association to one urgencia default 'MEDIA';
-    usuario : type of managed:createdBy
-        @cds.on.insert : $user
-        @readonly
-        @title : '{i18n>CreatedBy}'
-        @Core.Immutable
-        @UI.ExcludeFromNavigationContext
-        @UI.HiddenFilter;
+    usuario : String @cds.on.insert: $user;
     comunicaciones : Composition of many 
     {
         key ID : UUID;

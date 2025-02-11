@@ -8,6 +8,7 @@ class servicesdesk_srv extends cds.ApplicationService {
     this.before("UPDATE", "solicitudesUser", (req) => this.onUpdate(req));
     this.before("UPDATE", "solicitudesAdmin", (req) => this.onUpdateAdmin(req));
     this.before("CREATE", "solicitudesUser", (req) => this.onCreate(req));
+
     return super.init();
   }
 

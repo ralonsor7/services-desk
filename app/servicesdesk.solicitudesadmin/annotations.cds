@@ -17,8 +17,13 @@ annotate service.solicitudesAdmin with @(
             },
             {
                 $Type : 'UI.DataField',
-                Value : createdBy,
-                Label : '{i18n>UserID5}',
+                Value : usuario,
+                Label : '{i18n>Usuarioobj}',
+            },
+            {
+                $Type : 'UI.DataField',
+                Value : modifiedBy,
+                Label : '{i18n>Modify1}',
             },
             {
                 $Type : 'UI.DataField',
@@ -45,7 +50,7 @@ annotate service.solicitudesAdmin with @(
             {
                 $Type : 'UI.DataField',
                 Value : persona_soporte_ID,
-                Label : 'persona_soporte_ID',
+                Label : '{i18n>Personasoporteid2}',
             },
         ],
     },
@@ -70,8 +75,13 @@ annotate service.solicitudesAdmin with @(
         },
         {
             $Type : 'UI.DataField',
-            Value : createdBy,
-            Label : '{i18n>UserID4}',
+            Value : usuario,
+            Label : '{i18n>Usuario32}',
+        },
+        {
+            $Type : 'UI.DataField',
+            Value : modifiedBy,
+            Label : '{i18n>Modify}',
         },
         {
             $Type : 'UI.DataField',
@@ -131,18 +141,20 @@ annotate service.solicitudesAdmin with @(
         TypeNamePlural : '',
         Title : {
             $Type : 'UI.DataField',
-            Value : createdBy,
+            Value : usuario,
         },
     },
     UI.SelectionFields : [
         Estado_code,
         Urgencia_code,
         tipo_solicitud_ID,
+        usuario,
     ],
 );
 
 annotate service.solicitudesAdmin with {
     tipo_solicitud @(
+        Common.Label : '{i18n>Tiposolicitudid2}',
         Common.ValueList : {
             $Type : 'Common.ValueListType',
             CollectionPath : 'tipo_solicitud',
@@ -158,9 +170,8 @@ annotate service.solicitudesAdmin with {
                 },
             ],
         },
-        Common.Label : '{i18n>Tiposolicitudid2}',
         Common.ValueListWithFixedValues : true,
-    )
+        )
 };
 
 annotate service.solicitudesAdmin.comunicaciones with @(
@@ -199,19 +210,8 @@ annotate service.solicitudesAdmin.comunicaciones with {
 annotate service.solicitudesAdmin with {
     Estado @(
         Common.Label : '{i18n>Estadocode2}',
-        Common.ValueList : {
-            $Type : 'Common.ValueListType',
-            CollectionPath : 'estado',
-            Parameters : [
-                {
-                    $Type : 'Common.ValueListParameterInOut',
-                    LocalDataProperty : Estado_code,
-                    ValueListProperty : 'name',
-                },
-            ],
-        },
         Common.ValueListWithFixedValues : true,
-    )
+        )
 };
 
 annotate service.solicitudesAdmin with {
@@ -232,21 +232,6 @@ annotate service.solicitudesAdmin with {
     )
 };
 annotate service.solicitudesAdmin with {
-    motivo @(Common.ValueList : {
-            $Type : 'Common.ValueListType',
-            CollectionPath : 'solicitudesAdmin',
-            Parameters : [
-                {
-                    $Type : 'Common.ValueListParameterInOut',
-                    LocalDataProperty : motivo,
-                    ValueListProperty : 'persona_soporte_ID',
-                },
-            ],
-        },
-        Common.ValueListWithFixedValues : true
-)};
-
-annotate service.solicitudesAdmin with {
     persona_soporte @(Common.ValueList : {
             $Type : 'Common.ValueListType',
             CollectionPath : 'persona_soporte',
@@ -260,4 +245,12 @@ annotate service.solicitudesAdmin with {
         },
         Common.ValueListWithFixedValues : true
 )};
+
+annotate service.solicitudesAdmin with {
+    Usuarios @Common.Label : 'Usuarios_nombre'
+};
+
+annotate service.solicitudesAdmin with {
+    usuario @Common.Label : '{i18n>UsuarioFilter}'
+};
 

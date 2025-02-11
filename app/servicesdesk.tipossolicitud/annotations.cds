@@ -46,3 +46,8 @@ annotate service.tipo_solicitud with @(
     },
 );
 
+
+annotate service.tipo_solicitud with {
+    ID @Common.FieldControl : #Optional
+};
+
