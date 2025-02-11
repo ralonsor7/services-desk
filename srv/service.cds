@@ -6,7 +6,6 @@ service servicesdesk_srv
     annotate solicitudesAdmin with @restrict :
     [
         { grant : [ '*' ], to : [ 'Admin' ] },
-        { grant : [ 'READ' ], to : [ 'User' ] }
     ];
 
     annotate solicitudesUser with @restrict :
@@ -14,7 +13,7 @@ service servicesdesk_srv
         { grant : [ 'READ' ], to : [ 'Admin' ] },
         { grant : [ 'CREATE' ], to : [ 'User' ], where : 'createdBy = $user' },
         { grant : [ 'READ' ], to : [ 'User' ], where : 'createdBy = $user' },
-        { grant : [ 'UPDATE' ], to : [ 'User' ] }
+        { grant : [ 'UPDATE' ], to : [ 'User' ], where : 'createdBy = $user' }
     ];
 
     annotate tipo_solicitud with @restrict :

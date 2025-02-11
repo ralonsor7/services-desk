@@ -17,8 +17,8 @@ annotate service.solicitudesUser with @(
             },
             {
                 $Type : 'UI.DataField',
-                Value : createdBy,
-                Label : '{i18n>UserID2}',
+                Value : usuario,
+                Label : '{i18n>Usuario17}',
             },
             {
                 $Type : 'UI.DataField',
@@ -71,8 +71,8 @@ annotate service.solicitudesUser with @(
         },
         {
             $Type : 'UI.DataField',
-            Value : createdBy,
-            Label : '{i18n>UserID1}',
+            Value : usuario,
+            Label : '{i18n>Usuario32}',
         },
         {
             $Type : 'UI.DataField',
