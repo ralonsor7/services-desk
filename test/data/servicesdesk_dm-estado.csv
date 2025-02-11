@@ -1,0 +1,5 @@
+name;descr;code;criticality
+Pendiente;Pendiente;PENDIENTE;5
+Cerrada;Cerrada;CERRADA;0
+En proceso;En proceso;PROCESO;2
+Resuelta;Resuelta;RESUELTA;3
