@@ -1,0 +1,120 @@
+{
+  "_version": "3.0.0",
+  "identification": {
+    "title": "servicesdesk",
+    "id": "servicesdesk-flp",
+    "entityType": "bundle"
+  },
+  "payload": {
+    "catalogs": [
+      {
+        "_version": "3.0.0",
+        "identification": {
+          "id": "servicesdesk-catalog",
+          "title": "{{title}}",
+          "entityType": "catalog",
+          "i18n": "i18n/catalog.properties"
+        },
+        "payload": {
+          "viz": [
+            {
+              "appId": "servicesdesk",
+              "vizId": "Books-display"
+            },
+            {
+              "appId": "servicesdesk.solicitudesadmin",
+              "vizId": "servicesdesksolicitudesadmin-display"
+            },
+            {
+              "appId": "servicesdesk.solicitudesuser",
+              "vizId": "servicesdesksolicitudesuser-display"
+            },
+            {
+              "appId": "servicesdesk.tipossolicitud",
+              "vizId": "servicesdesktipossolicitud-display"
+            }
+          ]
+        }
+      }
+    ],
+    "groups": [
+      {
+        "_version": "3.0.0",
+        "identification": {
+          "id": "servicesdesk-group",
+          "title": "{{title}}",
+          "entityType": "group",
+          "i18n": "i18n/group.properties"
+        },
+        "payload": {
+          "viz": [
+            {
+              "id": "servicesdeskassets-001",
+              "appId": "servicesdesk",
+              "vizId": "Books-display"
+            },
+            {
+              "id": "servicesdeskservicesdesk.solicitudesadmin-001",
+              "appId": "servicesdesk.solicitudesadmin",
+              "vizId": "servicesdesksolicitudesadmin-display"
+            },
+            {
+              "id": "servicesdeskservicesdesk.solicitudesuser-001",
+              "appId": "servicesdesk.solicitudesuser",
+              "vizId": "servicesdesksolicitudesuser-display"
+            },
+            {
+              "id": "servicesdeskservicesdesk.tipossolicitud-001",
+              "appId": "servicesdesk.tipossolicitud",
+              "vizId": "servicesdesktipossolicitud-display"
+            }
+          ]
+        }
+      }
+    ],
+    "sites": [
+      {
+        "_version": "3.0.0",
+        "identification": {
+          "id": "servicesdesk-site",
+          "entityType": "site",
+          "title": "servicesdesk",
+          "description": "servicesdesk"
+        },
+        "payload": {
+          "config": {
+            "ushellConfig": {
+              "renderers": {
+                "fiori2": {
+                  "componentData": {
+                    "config": {
+                      "applications": {
+                        "Shell-home": {}
+                      },
+                      "enableSearch": true,
+                      "enablePersonalization": true,
+                      "enableSetTheme": true,
+                      "enableSetLanguage": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "groupsOrder": ["servicesdesk-group"],
+          "sap.cloud.portal": {
+            "config": {
+              "theme.id": "sap_horizon",
+              "theme.active": [
+                "sap_horizon",
+                "sap_horizon_dark",
+                "sap_horizon_hcw",
+                "sap_horizon_hcb"
+              ]
+            }
+          }
+        }
+      }
+    ]
+  }
+}

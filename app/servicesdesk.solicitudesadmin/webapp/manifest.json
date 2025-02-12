@@ -35,6 +35,14 @@
             "parameters": {},
             "additionalParameters": "allowed"
           }
+        },
+        "servicesdesk.tipossolicitud-display": {
+          "semanticObject": "servicesdesk.tipossolicitud",
+          "action": "display",
+          "signature": {
+            "parameters": {},
+            "additionalParameters": "allowed"
+          }
         }
       }
     }
@@ -151,5 +159,9 @@
   "sap.fiori": {
     "registrationIds": [],
     "archeType": "transactional"
+  },
+  "sap.cloud": {
+    "public": true,
+    "service": "servicesdesk.service"
   }
 }

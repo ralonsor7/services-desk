@@ -1,0 +1,245 @@
+_schema-version: 3.3.0
+ID: servicesdesk
+version: 1.0.0
+description: "servicesdesk"
+parameters:
+  enable-parallel-deployments: true
+  deploy_mode: html5-repo
+build-parameters:
+  before-all:
+    - builder: custom
+      commands:
+        - npm ci
+        - npx cds build --production
+modules:
+  - name: servicesdesk-srv
+    type: nodejs
+    path: gen/srv
+    parameters:
+      buildpack: nodejs_buildpack
+      readiness-health-check-type: http
+      readiness-health-check-http-endpoint: /health
+    build-parameters:
+      builder: npm
+    provides:
+      - name: srv-api # required by consumers of CAP services (e.g. approuter)
+        properties:
+          srv-url: ${default-url}
+    requires:
+      - name: servicesdesk-auth
+      - name: servicesdesk-destination
+      - name: servicesdesk-db
+
+  - name: servicesdesk
+    type: approuter.nodejs
+    path: app/router
+    parameters:
+      keep-existing-routes: true
+      disk-quota: 256M
+      memory: 256M
+    requires:
+      - name: srv-api
+        group: destinations
+        properties:
+          name: srv-api # must be used in xs-app.json as well
+          url: ~{srv-url}
+          forwardAuthToken: true
+      - name: servicesdesk-auth
+      - name: servicesdesk-destination
+      - name: servicesdesk-html5-runtime
+      - name: servicesdesk-portal
+    provides:
+      - name: app-api
+        properties:
+          app-protocol: ${protocol}
+          app-uri: ${default-uri}
+
+  - name: servicesdesk-db-deployer
+    type: hdb
+    path: gen/db
+    parameters:
+      buildpack: nodejs_buildpack
+    requires:
+      - name: servicesdesk-db
+
+  - name: servicesdesk-app-deployer
+    type: com.sap.application.content
+    path: gen
+    requires:
+      - name: servicesdesk-html5-repo-host
+        parameters:
+          content-target: true
+    build-parameters:
+      build-result: app/
+      requires:
+        - name: servicesdeskassets
+          artifacts:
+            - assets.zip
+          target-path: app/
+        - name: servicesdeskservicesdesk.solicitudesadmin
+          artifacts:
+            - servicesdesk.solicitudesadmin.zip
+          target-path: app/
+        - name: servicesdeskservicesdesk.solicitudesuser
+          artifacts:
+            - servicesdesk.solicitudesuser.zip
+          target-path: app/
+        - name: servicesdeskservicesdesk.tipossolicitud
+          artifacts:
+            - servicesdesk.tipossolicitud.zip
+          target-path: app/
+
+  - name: servicesdeskassets
+    type: html5
+    path: app/assets
+    build-parameters:
+      build-result: dist
+      builder: custom
+      commands:
+        - npm run build
+      supported-platforms:
+        []
+  - name: servicesdeskservicesdesk.solicitudesadmin
+    type: html5
+    path: app/servicesdesk.solicitudesadmin
+    build-parameters:
+      build-result: dist
+      builder: custom
+      commands:
+        - npm ci
+        - npm run build
+      supported-platforms:
+        []
+  - name: servicesdeskservicesdesk.solicitudesuser
+    type: html5
+    path: app/servicesdesk.solicitudesuser
+    build-parameters:
+      build-result: dist
+      builder: custom
+      commands:
+        - npm ci
+        - npm run build
+      supported-platforms:
+        []
+  - name: servicesdeskservicesdesk.tipossolicitud
+    type: html5
+    path: app/servicesdesk.tipossolicitud
+    build-parameters:
+      build-result: dist
+      builder: custom
+      commands:
+        - npm ci
+        - npm run build
+      supported-platforms:
+        []
+
+  - name: servicesdesk-portal-deployer
+    type: com.sap.application.content
+    path: app/portal
+    requires:
+      - name: servicesdesk-portal
+        parameters:
+          content-target: true
+          service-key:
+            name: servicesdesk-portal-key
+            config:
+              content-endpoint: developer
+      - name: servicesdesk-auth
+      - name: servicesdesk-html5-repo-host
+      - name: servicesdesk-app-deployer
+    deployed-after:
+      - servicesdesk-app-deployer
+
+  - name: servicesdesk-destinations
+    type: com.sap.application.content
+    requires:
+      - name: servicesdesk-auth
+        parameters:
+          service-key:
+            name: servicesdesk-auth-key
+      - name: servicesdesk-html5-repo-host
+        parameters:
+          service-key:
+            name: servicesdesk-html5-repo-host-key
+      - name: srv-api
+      - name: servicesdesk-destination
+        parameters:
+          content-target: true
+    build-parameters:
+      no-source: true
+    parameters:
+      content:
+        instance:
+          existing_destinations_policy: update
+          destinations:
+            - Name: servicesdesk-html5-repository
+              ServiceInstanceName: servicesdesk-html5-repo-host
+              ServiceKeyName: servicesdesk-html5-repo-host-key
+              sap.cloud.service: servicesdesk.service
+            - Name: servicesdesk-auth
+              Authentication: OAuth2UserTokenExchange
+              ServiceInstanceName: servicesdesk-auth
+              ServiceKeyName: servicesdesk-auth-key
+              sap.cloud.service: servicesdesk.service
+
+resources:
+  - name: servicesdesk-auth
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: xsuaa
+      service-plan: application
+      path: ./xs-security.json
+      config:
+        xsappname: servicesdesk-${org}-${space}
+        tenant-mode: dedicated
+  - name: servicesdesk-destination
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: destination
+      service-plan: lite
+      config:
+        HTML5Runtime_enabled: true
+        init_data:
+          instance:
+            existing_destinations_policy: update
+            destinations:
+              - Name: servicesdesk-srv-api
+                URL: ~{srv-api/srv-url}
+                Authentication: NoAuthentication
+                Type: HTTP
+                ProxyType: Internet
+                HTML5.ForwardAuthToken: true
+                HTML5.DynamicDestination: true
+              - Name: ui5
+                URL: https://ui5.sap.com
+                Authentication: NoAuthentication
+                Type: HTTP
+                ProxyType: Internet
+    requires:
+      - name: srv-api
+        group: destinations
+        properties:
+          name: srv-api # must be used in xs-app.json as well
+          url: ~{srv-url}
+          forwardAuthToken: true
+  - name: servicesdesk-db
+    type: com.sap.xs.hdi-container
+    parameters:
+      service: hana
+      service-plan: hdi-shared
+
+  - name: servicesdesk-html5-repo-host
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: html5-apps-repo
+      service-plan: app-host
+  - name: servicesdesk-html5-runtime
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: html5-apps-repo
+      service-plan: app-runtime
+  - name: servicesdesk-portal
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: portal
+      service-plan: standard

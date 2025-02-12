@@ -247,10 +247,6 @@ annotate service.solicitudesAdmin with {
 )};
 
 annotate service.solicitudesAdmin with {
-    Usuarios @Common.Label : 'Usuarios_nombre'
-};
-
-annotate service.solicitudesAdmin with {
     usuario @Common.Label : '{i18n>UsuarioFilter}'
 };
 
