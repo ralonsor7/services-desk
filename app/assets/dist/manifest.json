@@ -12,7 +12,7 @@
     "crossNavigation": {
       "inbounds": {
         "servicesdesk.tipossolicitud-display": {
-          "semanticObject": "servicesdesk.tipossolicitud",
+          "semanticObject": "servicesdesk_tipossolicitud",
           "action": "display",
           "signature": {
             "parameters": {},
