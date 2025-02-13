@@ -217,17 +217,6 @@ annotate service.solicitudesAdmin with {
 annotate service.solicitudesAdmin with {
     Urgencia @(
         Common.Label : '{i18n>Urgenciacode2}',
-        Common.ValueList : {
-            $Type : 'Common.ValueListType',
-            CollectionPath : 'urgencia',
-            Parameters : [
-                {
-                    $Type : 'Common.ValueListParameterInOut',
-                    LocalDataProperty : Urgencia_code,
-                    ValueListProperty : 'name',
-                },
-            ],
-        },
         Common.ValueListWithFixedValues : true,
     )
 };
